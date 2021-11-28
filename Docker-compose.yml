@@ -1,0 +1,25 @@
+---
+version: '3.4'
+services:
+  dev:
+    build:
+      context: /home/devopsnikonele
+    volumes:
+      - type: volume
+        source: vol
+        target: /home/test/boxfuse-sample-java-war-hello/target
+  prod:
+  #образ на основе которого будет запускаться приложение из первого контейнера
+    image: tomcat:9       
+  #этот контейнер имеет зависимость от dev среды
+    depends_on: 
+      - dev
+    #прописываем рабочую директорию  
+    volumes:
+       - type: volume
+         source: vol
+         target: /usr/local/tomcat/webapps
+    ports:
+      - "8080:8080"
+volumes:
+  vol:  
